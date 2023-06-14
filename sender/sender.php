@@ -5,6 +5,12 @@
 //apt-get install gstreamer1.0-plugins-ugly
 //apt-get install php-cli php-curl
 
+//HLS: https://forums.raspberrypi.com/viewtopic.php?t=331172
+//g-streamer: https://qengineering.eu/install-gstreamer-1.18-on-raspberry-pi-4.html
+
+// script
+///////////////////////////////////////////////////////////////////////////////
+
 set_time_limit(0);
 
 // dont run more than once
@@ -51,10 +57,11 @@ function post($destination, $fps, $resolution) {
 	];
 
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, "http://" . $destination . "/post_stream.php");
+	curl_setopt($ch, CURLOPT_URL, "http://" . $destination . "/api/post_stream.php");
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 7);
 	curl_exec($ch);
 	curl_close($ch);
