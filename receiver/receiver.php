@@ -1,5 +1,9 @@
 #!/usr/bin/php
 <?php
+
+// script
+///////////////////////////////////////////////////////////////////////////////
+
 set_time_limit(0);
 
 // we dont want this to run twice
@@ -49,7 +53,7 @@ while (TRUE) {
 		foreach ($data as $s) {
 			$id = $s['id'];
 			$ts = $s['last_ping'];
-			$ip = $s['ip_address'];
+			$ip = $s['vpn_ip'];
 			$fps = $s['fps'];
 			$diff = time() - $ts;
 

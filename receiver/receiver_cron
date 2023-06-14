@@ -1,2 +1,2 @@
-@reboot	/home/david/bodycam/receiver/receiver_setup.sh
-* * * * *	root	/home/david/bodycam/receiver/receiver.php
+@reboot	/app/bodycam/receiver/receiver_setup.sh
+* * * * *	root	/app/bodycam/receiver/receiver.php
