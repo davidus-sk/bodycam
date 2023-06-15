@@ -7,6 +7,7 @@
 
 //HLS: https://forums.raspberrypi.com/viewtopic.php?t=331172
 //g-streamer: https://qengineering.eu/install-gstreamer-1.18-on-raspberry-pi-4.html
+//https://github.com/bluenviron/mediamtx
 
 // script
 ///////////////////////////////////////////////////////////////////////////////
