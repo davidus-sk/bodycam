@@ -11,9 +11,11 @@ $rows = $db->asArray();
 </head>
 <body>
     <div class="container" style="padding-top: 2rem;">
+        <h1>Current Live Streams</h1>
+
         <table class="table">
 
-            <tr>
+            <tr style="background:#eee">
                 <th style="width: 240px;">ID</th>
                 <th style="width: 240px;">VPN IP</th>
                 <th style="width: 100px;">FPS</th>
@@ -31,7 +33,7 @@ $rows = $db->asArray();
                 <td><?=$row['vpnIp_c'];?></td>
                 <td><?=$row['fps_n'];?></td>
                 <td><?=$row['resolution_c'];?></td>
-                <td><?=date(DATE_ATOM, $row['lastPing_d']);?></td>
+                <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
             </tr>
 
                 <?php

@@ -15,6 +15,7 @@ $rows = $db->asArray();
 $response = [
     'success' => true,
     'count' => count($rows),
+    'server_time' => time(),
     'data' => [],
 ];
 
