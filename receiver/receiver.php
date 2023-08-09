@@ -47,7 +47,7 @@ echo date('r') . "> Quadrants at: " . json_encode($quad) . "\n";
 // continously check camera updates
 while (TRUE) {
 	// get streaming data from the relay server
-	$json = file_get_contents('http://3.94.227.148/get_streams.php');
+	$json = file_get_contents('http://10.220.0.1/api/get_streams.php');
 
 	if ($data = json_decode($json, TRUE)) {
 		foreach ($data as $s) {
@@ -57,7 +57,7 @@ while (TRUE) {
 			$fps = $s['fps'];
 			$diff = time() - $ts;
 
-			echo date('r') . "> Camera $id at $ip last seen $ts ($diff)\n";
+			echo date('r') . "> Camera {$id} at {$ip} last seen $ts ({$diff})\n";
 
 			// check if stream is running
 			$pid = trim(`/usr/bin/pgrep -f "[S]tream: $id"`);

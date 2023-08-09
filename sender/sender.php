@@ -40,7 +40,7 @@ $options['w'] = empty($options['w']) ? 640 : (int)$options['w'];
 $options['h'] = empty($options['h']) ? 360 : (int)$options['h'];
 $options['p'] = empty($options['p']) ? 12345 : (int)$options['p'];
 $options['f'] = empty($options['f']) ? 15 : (int)$options['f'];
-$options['s'] = empty($options['s']) ? '10.221.199.1' : $options['s'];
+$options['s'] = empty($options['s']) ? '10.220.0.1' : $options['s'];
 
 // debug
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ echo date('r') . "> Starting sender\n";
 function post($destination, $fps, $resolution) {
 	$post = [
 		'id' => trim(`/usr/bin/cat /proc/cpuinfo | /usr/bin/grep Serial | /usr/bin/cut -d ' ' -f 2`),
-		'vpn_ip' => trim(`ip a show dev tun0 | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`),
+		'vpn_ip' => trim(`/usr/sbin/ip a show dev tun0 | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`),
 		'fps' => $fps,
 		'resolution' => $resolution
 	];
