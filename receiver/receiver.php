@@ -6,6 +6,9 @@
 
 set_time_limit(0);
 
+// shared functions
+include __DIR__ . '/../lib/functions.php';
+
 // we dont want this to run twice
 $lockFile = fopen('/tmp/receiver.pid', 'c');
 $gotLock = flock($lockFile, LOCK_EX | LOCK_NB, $wouldBlock);
@@ -50,7 +53,7 @@ while (TRUE) {
 	$json = file_get_contents('http://10.220.0.1/api/get_streams.php');
 
 	if ($data = json_decode($json, TRUE)) {
-		foreach ($data as $s) {
+		foreach ($data['data'] as $s) {
 			$id = $s['id'];
 			$ts = $s['last_ping'];
 			$ip = $s['vpn_ip'];
@@ -88,6 +91,11 @@ while (TRUE) {
 				}//foreach
 			}//if
 		}//foreach
+	}//if
+
+	// notify
+	if (time() % 90 == 0) {
+		post('10.220.0.1', 'receiver', $w . 'x' . $h);
 	}//if
 
 	sleep(2);
