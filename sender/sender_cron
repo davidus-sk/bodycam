@@ -1,3 +1,2 @@
-@reboot	/app/bodycam/sender/sender_setup.sh
 @reboot		root	/app/bodycam/common/at_boot.sh
 * * * * *	root	/app/bodycam/sender/sender.php
