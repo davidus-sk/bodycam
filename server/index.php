@@ -18,10 +18,11 @@ $streams = $db->asArray();
 
         <table class="table">
             <tr style="background:#eee">
-                <th style="width: 240px;">ID</th>
-                <th style="width: 240px;">VPN IP</th>
-                <th style="width: 150px;">Resolution</th>
-                <th style="width: auto;">Last Ping</th>
+                <th style="width: 200px;">ID</th>
+                <th style="width: 200px;">VPN IP</th>
+                <th style="width: 100px;">Resolution</th>
+                <th style="width: 300px;">Last Ping</th>
+		<th style="width: auto;">Modem</th>
             </tr>
 
             <?php
@@ -34,6 +35,13 @@ $streams = $db->asArray();
                 <td><?=$row['vpnIp_c'];?></td>
                 <td><?=$row['resolution_c'];?></td>
                 <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
+                <td>
+                <?php
+                $modem = json_decode($row['modem_c'], TRUE);
+
+		echo "{$modem['network_provider']} ({$modem['network_type']}: {$modem['signalbar']} bars)";
+                ?>
+                </td>
             </tr>
 
                 <?php
@@ -58,11 +66,12 @@ $streams = $db->asArray();
         <table class="table">
 
             <tr style="background:#eee">
-                <th style="width: 240px;">ID</th>
-                <th style="width: 240px;">VPN IP</th>
+                <th style="width: 200px;">ID</th>
+                <th style="width: 200px;">VPN IP</th>
                 <th style="width: 100px;">FPS</th>
-                <th style="width: 150px;">Resolution</th>
-                <th style="width: auto;">Last Ping</th>
+                <th style="width: 110px;">Resolution</th>
+                <th style="width: 300px;">Last Ping</th>
+                <th style="width: auto;">Modem</th>
             </tr>
 
             <?php
@@ -76,6 +85,14 @@ $streams = $db->asArray();
                 <td><?=$row['fps_n'];?></td>
                 <td><?=$row['resolution_c'];?></td>
                 <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
+                <td>
+                <?php
+                $modem = json_decode($row['modem_c'], TRUE);
+
+                echo "{$modem['network_provider']} ({$modem['network_type']}: {$modem['signalbar']} bars)";
+                ?>
+                </td>
+
             </tr>
 
                 <?php
