@@ -14,7 +14,7 @@ function post($destination, $type, $resolution, $fps = null) {
 		'vpn_ip' => trim(`/usr/sbin/ip a show dev tun0 | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`),
 		'fps' => $fps,
 		'resolution' => $resolution,
-		'modem' => get_cellular_data(),
+		'modem' => json_encode(get_cellular_data()),
 	];
 
 	$ch = curl_init();
@@ -58,5 +58,5 @@ function get_cellular_data() {
 		];
 	}//if
 
-	return false;
+	return [];
 }//function
