@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$vpnIp = !empty($_POST['vpn_ip']) ? trim($_POST['vpn_ip']) : null;
 		$resolution = !empty($_POST['resolution']) ? trim($_POST['resolution']) : null;
 		$lastPing = !empty($_POST['last_ping']) ? trim($_POST['last_ping']) : null;
+		$modem = !empty($_POST['modem']) ? trim($_POST['modem']) : null;
 
         $errors = [];
         if (empty($streamId)) {
@@ -47,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'vpnIp_c' => $vpnIp,
                         'resolution_c' => $resolution,
                         'lastPing_d' => $lastPing,
+                        'modem_c' => $modem,
                     ], ['id_c' => $streamId]);
 
                     http_response_code(200);
@@ -58,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'vpnIp_c' => $vpnIp,
                         'resolution_c' => $resolution,
                         'lastPing_d' => $lastPing,
+                        'modem_c' => $modem,
                     ]);
 
                     http_response_code(201);

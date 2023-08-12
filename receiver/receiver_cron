@@ -1,3 +1,3 @@
 @reboot		david	/app/bodycam/receiver/receiver_setup.sh
 @reboot		root	/app/bodycam/common/at_boot.sh
-#* * * * *	david	/app/bodycam/receiver/receiver.php
+* * * * *	david	/app/bodycam/receiver/receiver.php
