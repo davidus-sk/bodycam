@@ -26,13 +26,12 @@ $streams = $db->asArray();
 
             <?php
             if (!empty($receivers)) {
-                foreach ($rows as $row) {
+                foreach ($receivers as $row) {
                 ?>
 
             <tr>
                 <td><?=$row['id_c'];?></td>
                 <td><?=$row['vpnIp_c'];?></td>
-                <td><?=$row['fps_n'];?></td>
                 <td><?=$row['resolution_c'];?></td>
                 <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
             </tr>
@@ -43,7 +42,7 @@ $streams = $db->asArray();
             ?>
 
             <tr>
-                <td colspan="5">No streams found.</td>
+                <td colspan="4">No receivers found.</td>
             </tr>
 
             <?php
@@ -68,7 +67,7 @@ $streams = $db->asArray();
 
             <?php
             if (!empty($streams)) {
-                foreach ($rows as $row) {
+                foreach ($streams as $row) {
                 ?>
 
             <tr>

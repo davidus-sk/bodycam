@@ -26,6 +26,32 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `db_bodycams` /*!40100 DEFAULT CHARACTE
 USE `db_bodycams`;
 
 --
+-- Table structure for table `tbl_receivers`
+--
+
+DROP TABLE IF EXISTS `tbl_receivers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_receivers` (
+  `id_c` char(16) NOT NULL,
+  `vpnIp_c` char(15) NOT NULL,
+  `resolution_c` varchar(20) NOT NULL,
+  `lastPing_d` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id_c`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_receivers`
+--
+
+LOCK TABLES `tbl_receivers` WRITE;
+/*!40000 ALTER TABLE `tbl_receivers` DISABLE KEYS */;
+INSERT INTO `tbl_receivers` VALUES ('10000000e7f25fc6','10.220.0.10','800x600',1691725321);
+/*!40000 ALTER TABLE `tbl_receivers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_streams`
 --
 
@@ -60,4 +86,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-09 21:33:39
+-- Dump completed on 2023-08-11  3:44:38

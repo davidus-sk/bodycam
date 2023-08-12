@@ -49,6 +49,15 @@ echo date('r') . "> Quadrants at: " . json_encode($quad) . "\n";
 
 // continously check camera updates
 while (TRUE) {
+	$running = trim(`/usr/bin/pgrep -f "Stream: [0-9a-z]+"`);
+	$pids = [];
+
+	if (!empty($running)) {
+		$pids = explode("\n", $running);
+
+		echo date('r') . "> Running streams: " . join(',', $pids) . "\n";
+	}//if
+
 	// get streaming data from the relay server
 	$json = file_get_contents('http://10.220.0.1/api/get_streams.php');
 
@@ -69,11 +78,17 @@ while (TRUE) {
 				// is the stream stale?
 				if ($diff > 5) {
 					`/usr/bin/pkill -9 -f "[S]tream: $id"`;
+					echo date('r') . "> Killing stale stream - $id\n";
+
+					unset($pids[array_search($pid, $pids)]);
+
 					continue;
 				}//if
 
 				// stream is good, move on
 				echo date('r') . "> Running - $pid\n";
+
+				unset($pids[array_search($pid, $pids)]);
 			} else {
 				// not running, determine free locations
 				foreach ($quad as $q) {
@@ -82,8 +97,11 @@ while (TRUE) {
 						$bw = $w / 2;
 						$bh = $h / 2 - $bar / 2;
 
-						`DISPLAY=:0 /usr/bin/ffplay udp://{$ip}:12345 -vf "setpts=N/{$fps}" -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -left {$q[0]} -top {$q[1]} -window_title "Stream: $id" -x {$bw} -y {$bh} -noborder > /dev/shm/{$id}.log 2>&1 &`;
+						`DISPLAY=:0 /usr/bin/ffplay tcp://{$ip}:12345 -vf "setpts=N/{$fps}" -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -left {$q[0]} -top {$q[1]} -window_title "Stream: $id" -x {$bw} -y {$bh} -noborder > /dev/null 2>&1 &`;
 						echo date('r') . "> Launching $id on [{$q[0]},{$q[1]}]\n";
+
+						$pid = trim(`/usr/bin/pgrep -f "[S]tream: $id"`);
+						unset($pids[array_search($pid, $pids)]);
 
 						sleep(2);
 						break;
@@ -91,6 +109,16 @@ while (TRUE) {
 				}//foreach
 			}//if
 		}//foreach
+
+		if (!empty($pids)) {
+			foreach ($pids as $p) {
+				`/usr/bin/kill -9 $p`;
+
+				echo date('r') . "> Killing orphaned stream - $p\n";
+			}//if
+
+			unset($pids);
+		}//if
 	}//if
 
 	// notify
