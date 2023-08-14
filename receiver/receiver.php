@@ -26,7 +26,6 @@ fwrite($lockFile, getmypid() . "\n");
 $x = trim(`DISPLAY=:0 /usr/bin/xrandr | grep '*'`);
 $w = 800;
 $h = 600;
-$bar = 16;
 
 //    1920x1080     60.00*+  50.00    59.94
 if (preg_match('/([0-9]+)x([0-9]+)/', $x, $m)) {
@@ -95,7 +94,7 @@ while (TRUE) {
 					$l = trim(`/usr/bin/pgrep -f "[-]left $q[0] -top $q[1]"`);
 					if (empty($l)) {
 						$bw = $w / 2;
-						$bh = $h / 2 - $bar / 2;
+						$bh = $h / 2;
 
 						`DISPLAY=:0 /usr/bin/ffplay tcp://{$ip}:12345 -vf "setpts=N/{$fps}" -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -left {$q[0]} -top {$q[1]} -window_title "Stream: $id" -x {$bw} -y {$bh} -noborder > /dev/null 2>&1 &`;
 						echo date('r') . "> Launching $id on [{$q[0]},{$q[1]}]\n";
