@@ -60,3 +60,32 @@ function get_cellular_data() {
 
 	return [];
 }//function
+
+/**
+ * Set network type mode to automatic
+ *
+ * @return int
+ */
+function set_network_type()
+{
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "http://192.168.0.1/goform/goform_set_cmd_process");
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, "isTest=false&goformId=SET_BEARER_PREFERENCE&BearerPreference=NETWORK_auto");
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+		"Referer: http://192.168.0.1/index.html",
+		"X-Requested-With: XMLHttpRequest",
+		"Accept: application/json, text/javascript, */*; q=0.01"
+	]);
+	curl_exec($ch);
+
+	if (!curl_errno($ch)) {
+		return (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	}//if
+
+	curl_close($ch);
+
+	return -1;
+}//function
