@@ -46,6 +46,8 @@ for ($i = 0; $i <= 1; $i++) {
 
 echo date('r') . "> Quadrants at: " . json_encode($quad) . "\n";
 
+$streams = [];
+
 // continously check camera updates
 while (TRUE) {
 	$running = trim(`/usr/bin/pgrep -f "Stream: [0-9a-z]+"`);
@@ -80,6 +82,7 @@ while (TRUE) {
 					echo date('r') . "> Killing stale stream - $id\n";
 
 					unset($pids[array_search($pid, $pids)]);
+					unset($streams[$id]);
 
 					continue;
 				}//if
@@ -102,6 +105,9 @@ while (TRUE) {
 						$pid = trim(`/usr/bin/pgrep -f "[S]tream: $id"`);
 						unset($pids[array_search($pid, $pids)]);
 
+
+						$streams[$id] = $pid;
+
 						sleep(2);
 						break;
 					}//if
@@ -114,6 +120,9 @@ while (TRUE) {
 				`/usr/bin/kill -9 $p`;
 
 				echo date('r') . "> Killing orphaned stream - $p\n";
+
+				unset($pids[array_search($p, $pids)]);
+				unset($streams[$id]);
 			}//if
 
 			unset($pids);
@@ -121,8 +130,8 @@ while (TRUE) {
 	}//if
 
 	// notify
-	if (time() % 90 == 0) {
-		post('10.220.0.1', 'receiver', $w . 'x' . $h);
+	if (time() % 10 == 0) {
+		post('10.220.0.1', 'receiver', ['resolution' => $w . 'x' . $h, 'streams' => json_encode($streams)]);
 	}//if
 
 	sleep(2);

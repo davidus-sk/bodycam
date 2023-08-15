@@ -61,7 +61,7 @@ while (TRUE) {
 
 	if ($pid) {
 		// send ping to server
-		post($options['s'], 'stream',  $options['w'] . 'x' . $options['h'], $options['f']);
+		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f']]);
 
 		// stream is good, move on
 		echo date('r') . "> Running - $pid\n";
@@ -75,7 +75,7 @@ while (TRUE) {
 		`/usr/bin/libcamera-vid -t 0 -n --inline --framerate {$options['f']} --width {$options['w']} --height {$options['h']} -o - | /usr/bin/gst-launch-1.0 fdsrc fd=0 ! tcpserversink host=0.0.0.0 port={$options['p']} > /dev/null 2>&1 &`;
 
 		// send ping to server
-		post($options['s'], 'stream', $options['w'] . 'x' . $options['h'], $options['f']);
+		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f']]);
 
 		echo date('r') . "> Starting\n";
 	}//if
