@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$resolution = !empty($_POST['resolution']) ? trim($_POST['resolution']) : null;
 		$lastPing = !empty($_POST['last_ping']) ? trim($_POST['last_ping']) : null;
 		$modem = !empty($_POST['modem']) ? trim($_POST['modem']) : null;
+		$uptime = !empty($_POST['uptime']) ? trim($_POST['uptime']) : null;
 
         $errors = [];
         if (empty($streamId)) {
@@ -54,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'resolution_c' => $resolution,
                         'lastPing_d' => $lastPing,
                         'modem_c' => $modem,
+                        'uptime_n' => $uptime,
                     ], ['id_c' => $streamId]);
 
                     http_response_code(200);
@@ -66,7 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'fps_n' => $fps,
                         'resolution_c' => $resolution,
                         'lastPing_d' => $lastPing,
-                        'modem_c' => $modem
+                        'modem_c' => $modem,
+                        'uptime_n' => $uptime,
+                        'date_d' => time(),
                     ]);
 
                     http_response_code(201);

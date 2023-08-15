@@ -1,1 +1,2 @@
 * * * * *	root	/app/bodycam/server/cleanup_streams.php
+*/5 * * * *	root	/app/bodycam/server/thumbs.php

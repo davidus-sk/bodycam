@@ -7,6 +7,10 @@ $receivers = $db->asArray();
 
 $db->select('tbl_streams');
 $streams = $db->asArray();
+
+$db->select('tbl_thumbs');
+$thumbs = $db->asArray();
+
 ?>
 <html>
 <head>
@@ -20,9 +24,10 @@ $streams = $db->asArray();
             <tr style="background:#eee">
                 <th style="width: 80px;">ID</th>
                 <th style="width: 80px;">VPN IP</th>
-                <th style="width: 80px;">Resolution</th>
+                <th style="width: 160px;">Resolution</th>
                 <th style="width: 350px;">Last Ping</th>
-		<th style="width: auto;">Modem</th>
+		<th style="width: 160px;">Modem</th>
+                <th style="width: auto;">Streams</th>
             </tr>
 
             <?php
@@ -44,6 +49,18 @@ $streams = $db->asArray();
                 }//if
                 ?>
                 </td>
+		<td>
+		<?php
+		$ss = json_decode($row['streams_c'], TRUE);
+
+		$a = [];
+		foreach ($ss as $key=>$val) {
+			$a[] = substr($key, -8);
+		}//foreach
+
+		echo join(",", $a);
+		?>
+		</td>
             </tr>
 
                 <?php
@@ -52,7 +69,7 @@ $streams = $db->asArray();
             ?>
 
             <tr>
-                <td colspan="4">No receivers found.</td>
+                <td colspan="6">No receivers found.</td>
             </tr>
 
             <?php
@@ -70,10 +87,10 @@ $streams = $db->asArray();
             <tr style="background:#eee">
                 <th style="width: 80px;">ID</th>
                 <th style="width: 80px;">VPN IP</th>
-                <th style="width: 80px;">FPS</th>
-                <th style="width: 80px;">Resolution</th>
+                <th style="width: 160px;">Format</th>
                 <th style="width: 350px;">Last Ping</th>
-                <th style="width: auto;">Modem</th>
+                <th style="width: 160px;">Modem</th>
+                <th style="width: auto;">Elapsed</th>
             </tr>
 
             <?php
@@ -84,8 +101,7 @@ $streams = $db->asArray();
             <tr>
                 <td><?=$row['id_c'];?></td>
                 <td><?=$row['vpnIp_c'];?></td>
-                <td><?=$row['fps_n'];?></td>
-                <td><?=$row['resolution_c'];?></td>
+                <td><?=$row['resolution_c'];?> @ <?=$row['fps_n'];?>fps</td>
                 <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
                 <td>
                 <?php
@@ -96,6 +112,7 @@ $streams = $db->asArray();
                 }//if
                 ?>
                 </td>
+                <td><?=relativeTime($row['date_d']);?></td>
 
             </tr>
 
@@ -105,7 +122,7 @@ $streams = $db->asArray();
             ?>
 
             <tr>
-                <td colspan="5">No streams found.</td>
+                <td colspan="6">No streams found.</td>
             </tr>
 
             <?php
@@ -113,6 +130,34 @@ $streams = $db->asArray();
             ?>
 
         </table>
+
+	<h2>Last Images</h2>
+
+	<div class="row">
+
+		<?php
+		if (!empty($thumbs)) {
+			foreach ($thumbs as $row) {
+		?>
+
+
+		<div class="col-md-3">
+			<div class="card">
+				<img class="card-img-top" src="/data/<?=$row['image_c'];?>" alt="<?=$row['id_c'];?>">
+				<div class="card-body">
+					<h6 class="card-subtitle mb-2 text-muted">Streamer: <?=$row['id_c'];?></h6>
+					<p>Timestamp: <?=date('Y-m-d H:i:s', $row['date_d']);?></p>
+				</div>
+			</div>
+		</div>
+
+		<?php
+			}//foreach
+		}//if
+		?>
+
+	</div>
+
     </div>
 </body>
 </html>
