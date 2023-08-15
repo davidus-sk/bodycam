@@ -8,7 +8,7 @@ $receivers = $db->asArray();
 $db->select('tbl_streams');
 $streams = $db->asArray();
 
-$db->select('tbl_thumbs');
+$db->select('tbl_thumbs', null, 80, 'date_d DESC');
 $thumbs = $db->asArray();
 
 ?>
