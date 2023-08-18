@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-// script
+// RECEIVER script
 ///////////////////////////////////////////////////////////////////////////////
 
 set_time_limit(0);
@@ -23,26 +23,15 @@ ftruncate($lockFile, 0);
 fwrite($lockFile, getmypid() . "\n");
 
 // get settings
-$x = trim(`DISPLAY=:0 /usr/bin/xrandr | grep '*'`);
-$w = 800;
-$h = 600;
+$hdmi = hdmi_display_status();
 
-//    1920x1080     60.00*+  50.00    59.94
-if (preg_match('/([0-9]+)x([0-9]+)/', $x, $m)) {
-	$w = (int)$m[1];
-	$h = (int)$m[2];
-}//if
+list($w, $h) = hdmi_screen_size();
 
 // debug
 echo date('r') . "> Starting receiver\n";
 echo date('r') . "> Screen size: {$w}x{$h}\n";
 
-$quad = [];
-for ($i = 0; $i <= 1; $i++) {
-	for ($j = 0; $j <= 1; $j++) {
-		$quad[] = [$i*$w/2, $j*$h/2];
-	}//for
-}//for
+$quad = screen_quadrants($w, $h);
 
 echo date('r') . "> Quadrants at: " . json_encode($quad) . "\n";
 
@@ -130,8 +119,15 @@ while (TRUE) {
 	}//if
 
 	// notify
-	if (time() % 10 == 0) {
-		post('10.220.0.1', 'receiver', ['resolution' => $w . 'x' . $h, 'streams' => json_encode($streams)]);
+	if ((time() % 5) == 0) {
+		if (($hdmi == false) && hdmi_display_status()) {
+			list($w, $h) = hdmi_screen_size();
+			$quad = screen_quadrants($w, $h);
+		}//if
+
+		$hdmi = hdmi_display_status();
+
+		post('10.220.0.1', 'receiver', ['resolution' => $w . 'x' . $h, 'streams' => json_encode($streams), 'monitor' => $hdmi]);
 	}//if
 
 	sleep(2);

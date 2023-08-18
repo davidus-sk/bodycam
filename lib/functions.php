@@ -90,3 +90,56 @@ function set_network_type()
 
 	return -1;
 }//function
+
+/**
+ * Check if monitor is connected
+ *
+ * @return bool
+ */
+function hdmi_display_status()
+{
+	// Connector 0 (32) HDMI-A-1 (connected)
+	$status = `/usr/bin/kmsprint`;
+
+	if (preg_match('/Connector 0 \([0-9]+\) HDMI-A-1 \(([a-z]+)\)/', $status, $m)) {
+		if ($m[1] == 'connected') {
+			return true;
+		}//if
+	}//if
+
+	return false;
+}//function
+
+/**
+ * Get display resolution
+ *
+ * @return array
+ */
+function hdmi_screen_size()
+{
+	// get settings
+	$x = trim(`DISPLAY=:0 /usr/bin/xrandr | grep '*'`);
+	$w = 0;
+	$h = 0;
+
+	//    1920x1080     60.00*+  50.00    59.94
+	if (preg_match('/([0-9]+)x([0-9]+)/', $x, $m)) {
+		$w = (int)$m[1];
+		$h = (int)$m[2];
+	}//if
+
+	return [$w, $h];
+}//func
+
+function screen_quadrants($w, $h)
+{
+	$quad = [];
+
+	for ($i = 0; $i <= 1; $i++) {
+		for ($j = 0; $j <= 1; $j++) {
+			$quad[] = [$i*$w/2, $j*$h/2];
+		}//for
+	}//for
+
+	return $quad;
+}//function
