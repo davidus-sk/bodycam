@@ -137,7 +137,7 @@ $thumbs = $db->asArray();
 </div>
 
 <div class="card mb-4">
-	<h5 class="card-header>Last Images</h5>
+	<h5 class="card-header">Last Images</h5>
 
 	<div class="card-body">
 	<div class="row">
