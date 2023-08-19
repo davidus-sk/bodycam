@@ -18,17 +18,18 @@ $thumbs = $db->asArray();
 </head>
 <body>
     <div class="container" style="padding-top: 2rem;">
-        <h2>Current Live Receivers</h2>
+	<div class="card">
+	        <h2 class="card-header">Current Live Receivers</h2>
 
-        <table class="table">
-            <tr style="background:#eee">
-                <th style="width: 80px;">ID</th>
-                <th style="width: 80px;">VPN IP</th>
-                <th style="width: 160px;">Resolution</th>
-                <th style="width: 350px;">Last Ping</th>
-		<th style="width: 160px;">Modem</th>
-                <th style="width: auto;">Streams</th>
-            </tr>
+	        <table class="table">
+			<tr style="background:#eee">
+       			<th style="width: 80px;">ID</th>
+       		        <th style="width: 80px;">VPN IP</th>
+         	        <th style="width: 160px;">Resolution</th>
+                	<th style="width: 350px;">Last Ping</th>
+			<th style="width: 160px;">Modem</th>
+                	<th style="width: auto;">Streams</th>
+            		</tr>
 
             <?php
             if (!empty($receivers)) {
@@ -78,6 +79,7 @@ $thumbs = $db->asArray();
 
 
         </table>
+	</div>
 
 
         <h2>Current Live Streams</h2>
