@@ -8,3 +8,4 @@ sed -i -E 's/^127.0.1.1.*/127.0.1.1\t'"$host_name"'/' /etc/hosts
 /usr/bin/systemctl restart avahi-daemon
 
 /app/bodycam/common/modem_init.php
+/app/bodycam/common/modem_checker.php &
