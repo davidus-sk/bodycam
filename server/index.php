@@ -34,7 +34,8 @@ $thumbs = $db->asArray();
 					<th style="width: 80px;">ID</th>
 					<th style="width: 80px;">VPN IP</th>
 					<th style="width: 160px;">Resolution</th>
-					<th style="width: 350px;">Last Ping</th>
+					<th style="width: 100px;">Last Ping</th>
+					<th style="width: 100px;">Uptime</th>
 					<th style="width: 160px;">Modem</th>
 					<th style="width: auto;">Streams</th>
 				</tr>
@@ -48,7 +49,8 @@ $thumbs = $db->asArray();
 					<td><?=$row['id_c'];?></td>
 					<td><?=$row['vpnIp_c'];?></td>
 					<td><?=$row['resolution_c']=="0x0" ? "No monitor" : $row['resolution_c'];?></td>
-					<td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
+					<td><?=relativeTime($row['lastPing_d']);?></td>
+					<td><?=relativeTime(time() - $row['uptime_n']);?></td>
 					<td>
 					<?php
 					$modem = json_decode($row['modem_c'], TRUE);
@@ -78,7 +80,7 @@ $thumbs = $db->asArray();
 				?>
 
 				<tr>
-					<td colspan="6">No receivers found.</td>
+					<td colspan="7">No receivers found.</td>
 				</tr>
 
 				<?php
@@ -98,7 +100,8 @@ $thumbs = $db->asArray();
 						<th style="width: 80px;">ID</th>
 						<th style="width: 80px;">VPN IP</th>
 						<th style="width: 160px;">Format</th>
-						<th style="width: 350px;">Last Ping</th>
+						<th style="width: 100px;">Last Ping</th>
+						<th style="width: 100px;">Uptime</th>
 						<th style="width: 160px;">Modem</th>
 						<th style="width: auto;">Elapsed</th>
 					</tr>
@@ -114,7 +117,8 @@ $thumbs = $db->asArray();
 						<td><?=$row['id_c'];?></td>
 						<td><?=$row['vpnIp_c'];?></td>
 						<td><?=$row['resolution_c'];?> @ <?=$row['fps_n'];?>fps</td>
-						<td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
+						<td><?=relativeTime($row['lastPing_d']);?></td>
+						<td><?=relativeTime(time() - $row['uptime_n']);?></td>
 						<td>
 						<?php
 						$modem = json_decode($row['modem_c'], TRUE);
@@ -133,7 +137,7 @@ $thumbs = $db->asArray();
 				?>
 
 				<tr>
-					<td colspan="6">No streams found.</td>
+					<td colspan="7">No streams found.</td>
 				</tr>
 
 				<?php
