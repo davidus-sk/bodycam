@@ -23,7 +23,7 @@ $thumbs = $db->asArray();
 	<div class="container" style="padding-top: 2rem;">
 
 		<nav class="navbar navbar-dark bg-dark">
-			<span class="navbar-brand mb-0 h1">Body Cameras</span>
+			<span class="navbar-brand h1">Body Cameras</span>
 		</nav>
 
 		<div class="card mb-4">
