@@ -9,6 +9,7 @@ while(true) {
 	if (!empty($data)) {
 		if ($data['ppp_status'] != "ipv4_ipv6_connected") {
 			set_network_type();
+			sleep(15);
 		}//if
 	}//if
 
