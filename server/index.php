@@ -38,7 +38,7 @@ $thumbs = $db->asArray();
             <tr>
                 <td><?=$row['id_c'];?></td>
                 <td><?=$row['vpnIp_c'];?></td>
-                <td><?=$row['resolution_c'];?></td>
+                <td><?=$row['resolution_c']=="0x0" ? "No monitor" : $row['resolution_c'];?></td>
                 <td><?=date(DATE_ATOM, $row['lastPing_d']);?> (<?=relativeTime($row['lastPing_d']);?>)</td>
                 <td>
                 <?php
@@ -142,7 +142,7 @@ $thumbs = $db->asArray();
 
 
 		<div class="col-md-3">
-			<div class="card">
+			<div class="card mb-4">
 				<img class="card-img-top" src="/data/<?=$row['image_c'];?>" alt="<?=$row['id_c'];?>">
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-muted">Streamer: <?=$row['id_c'];?></h6>
