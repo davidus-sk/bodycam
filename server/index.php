@@ -18,7 +18,7 @@ $thumbs = $db->asArray();
 </head>
 <body>
     <div class="container" style="padding-top: 2rem;">
-	<div class="card">
+	<div class="card mb-4">
 	        <h5 class="card-header">Current Live Receivers</h5>
 
 	        <table class="table card-table">
@@ -81,11 +81,11 @@ $thumbs = $db->asArray();
         </table>
 	</div>
 
-<div class="card">
+<div class="card mb-4">
         <h5 class="card-header">Current Live Streams</h5>
 
         <table class="table card-table">
-
+	<thead>
             <tr style="background:#eee">
                 <th style="width: 80px;">ID</th>
                 <th style="width: 80px;">VPN IP</th>
@@ -94,7 +94,8 @@ $thumbs = $db->asArray();
                 <th style="width: 160px;">Modem</th>
                 <th style="width: auto;">Elapsed</th>
             </tr>
-
+	</thead>
+	<tbody>
             <?php
             if (!empty($streams)) {
                 foreach ($streams as $row) {
@@ -131,11 +132,14 @@ $thumbs = $db->asArray();
             }//if
             ?>
 
+	</tbody>
         </table>
 </div>
 
-	<h2>Last Images</h2>
+<div class="card mb-4">
+	<h5 class="card-header>Last Images</h5>
 
+	<div class="card-body">
 	<div class="row">
 
 		<?php
@@ -160,7 +164,10 @@ $thumbs = $db->asArray();
 		?>
 
 	</div>
+	</div>
 
     </div>
+</div>
+
 </body>
 </html>
