@@ -40,14 +40,17 @@ function get_receiver_ip($destination) {
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 7);
-	$data = trim(curl_exec($ch));
+	$json = curl_exec($ch);
 	curl_close($ch);
 
-	if (empty($data)) {
-		return NULL;
+	if ($data = json_decode($json, TRUE)) {
+		// for not return first one
+		if ($data['count'] > 0) {
+			return $data['data'][0]['vpn_ip'];
+		}//if
 	}//if
 
-	return $data;
+	return NULL;
 }//function
 
 /**
