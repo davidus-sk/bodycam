@@ -45,7 +45,7 @@ $options['h'] = empty($options['h']) ? 360 : (int)$options['h'];
 $options['p'] = empty($options['p']) ? 12345 : (int)$options['p'];
 $options['f'] = empty($options['f']) ? 15 : (int)$options['f'];
 $options['s'] = empty($options['s']) ? '10.220.0.1' : $options['s'];
-$options['r'] = get_receiver_ip();
+$options['r'] = get_receiver_ip($options['s']);
 
 // debug
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ while (TRUE) {
 
 		// check for receiver IP
 		if (time() % 2 == 0) {
-			$rip = get_receiver_ip();
+			$rip = get_receiver_ip($options['s']);
 
 			// IP changed, update
 			if (($rip != NULL) && ($rip != $options['r'])) {
