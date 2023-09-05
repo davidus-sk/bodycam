@@ -42,7 +42,7 @@ $options = getopt("w:h:p:f:s:");
 // provide default values
 $options['w'] = empty($options['w']) ? 640 : (int)$options['w'];
 $options['h'] = empty($options['h']) ? 360 : (int)$options['h'];
-$options['p'] = empty($options['p']) ? 12345 : (int)$options['p'];
+$options['p'] = empty($options['p']) ? mt_rand(8000, 9999) : (int)$options['p'];
 $options['f'] = empty($options['f']) ? 15 : (int)$options['f'];
 $options['s'] = empty($options['s']) ? '10.220.0.1' : $options['s'];
 $options['r'] = get_receiver_ip($options['s']);
@@ -63,7 +63,7 @@ while (TRUE) {
 
 	if ($pid) {
 		// send ping to server
-		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f']]);
+		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
 
 		// stream is good, move on
 		echo date('r') . "> Running - $pid\n";
@@ -89,7 +89,7 @@ while (TRUE) {
 		`/usr/bin/gst-launch-1.0 libcamerasrc auto-focus-mode=AfModeAuto ! video/x-raw,colorimetry=bt709,format=NV12,width={$options['w']},height={$options['h']},framerate={$options['f']}/1 ! videoconvert ! x264enc tune=zerolatency bitrate=300 byte-stream=true ! rtph264pay ! queue ! udpsink host={$options['r']} port={$options['p']} ttl=64 > /dev/null 2>&1 &`;
 
 		// send ping to server
-		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f']]);
+		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
 
 		echo date('r') . "> Starting\n";
 	}//if
