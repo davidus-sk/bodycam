@@ -68,7 +68,7 @@ while (TRUE) {
 		// stream is good, move on
 		echo date('r') . "> Running - $pid\n";
 
-		// check for receiver IP
+		// check for receiver IP change
 		if (time() % 2 == 0) {
 			$rip = get_receiver_ip($options['s']);
 
@@ -79,19 +79,21 @@ while (TRUE) {
 			}//if
 		}//if
 	} else {
-		// make sure nothing video related is running
-		//`/usr/bin/pkill -f "[l]ibcamera-vid"`; // OLD
-		`/usr/bin/pkill -f "[g]st-launch-1.0"`;
+		if (!empty($options['r'])) {
+			// make sure nothing video related is running
+			//`/usr/bin/pkill -f "[l]ibcamera-vid"`; // OLD
+			`/usr/bin/pkill -f "[g]st-launch-1.0"`;
 
-		// launch
-		//`libcamera-vid -t 0 --framerate 20 --width 640 --height 360 --inline -o udp://0.0.0.0:12345 > /dev/null 2>&1 &`;
-		//`/usr/bin/libcamera-vid -t 0 -n --inline --framerate {$options['f']} --width {$options['w']} --height {$options['h']} -o - | /usr/bin/gst-launch-1.0 fdsrc fd=0 ! tcpserversink host=0.0.0.0 port={$options['p']} > /dev/null 2>&1 &`; // OLD
-		`/usr/bin/gst-launch-1.0 libcamerasrc auto-focus-mode=AfModeAuto ! video/x-raw,colorimetry=bt709,format=NV12,width={$options['w']},height={$options['h']},framerate={$options['f']}/1 ! videoconvert ! x264enc tune=zerolatency bitrate=300 byte-stream=true ! rtph264pay ! queue ! udpsink host={$options['r']} port={$options['p']} ttl=64 > /dev/null 2>&1 &`;
+			// launch
+			//`libcamera-vid -t 0 --framerate 20 --width 640 --height 360 --inline -o udp://0.0.0.0:12345 > /dev/null 2>&1 &`;
+			//`/usr/bin/libcamera-vid -t 0 -n --inline --framerate {$options['f']} --width {$options['w']} --height {$options['h']} -o - | /usr/bin/gst-launch-1.0 fdsrc fd=0 ! tcpserversink host=0.0.0.0 port={$options['p']} > /dev/null 2>&1 &`; // OLD
+			`/usr/bin/gst-launch-1.0 libcamerasrc auto-focus-mode=AfModeAuto ! video/x-raw,colorimetry=bt709,format=NV12,width={$options['w']},height={$options['h']},framerate={$options['f']}/1 ! videoconvert ! x264enc tune=zerolatency bitrate=300 byte-stream=true ! rtph264pay ! queue ! udpsink host={$options['r']} port={$options['p']} ttl=64 > /dev/null 2>&1 &`;
 
-		// send ping to server
-		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
+			// send ping to server
+			post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
 
-		echo date('r') . "> Starting\n";
+			echo date('r') . "> Starting\n";
+		}//if
 	}//if
 
 	// rest a bit
