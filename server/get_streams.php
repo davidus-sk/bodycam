@@ -26,6 +26,7 @@ foreach ($rows as $row) {
         'fps' => $row['fps_n'],
         'resolution' => $row['resolution_c'],
         'last_ping' => (int)$row['lastPing_d'],
+        'port' => (int)$row['port_n'],
     ];
 }
 
