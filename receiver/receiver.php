@@ -80,6 +80,18 @@ while (TRUE) {
 					continue;
 				}//if
 
+				// did port change?
+				$sdp_port = trim(`/usr/bin/cat /tmp/{$id}.sdp | /usr/bin/grep m=video | /usr/bin/cut -d ' ' -f 2`);
+				if ($port != $sdp_port) {
+					`/usr/bin/pkill -9 -f "[S]tream: $id"`;
+					echo date('r') . "> Killing stale port - $id\n";
+
+					unset($pids[array_search($pid, $pids)]);
+					unset($streams[$id]);
+
+					continue;
+				}//if
+
 				// stream is good, move on
 				echo date('r') . "> Running - $pid\n";
 
