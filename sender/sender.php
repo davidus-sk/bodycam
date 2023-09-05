@@ -14,6 +14,10 @@
 
 set_time_limit(0);
 
+// common functions
+///////////////////////////////////////////////////////////////////////////////
+include __DIR__ . '/../lib/functions.php';
+
 // dont run more than once
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -41,15 +45,12 @@ $options['h'] = empty($options['h']) ? 360 : (int)$options['h'];
 $options['p'] = empty($options['p']) ? 12345 : (int)$options['p'];
 $options['f'] = empty($options['f']) ? 15 : (int)$options['f'];
 $options['s'] = empty($options['s']) ? '10.220.0.1' : $options['s'];
+$options['r'] = get_receiver_ip();
 
 // debug
 ///////////////////////////////////////////////////////////////////////////////
 
 echo date('r') . "> Starting sender\n";
-
-// common functions
-///////////////////////////////////////////////////////////////////////////////
-include __DIR__ . '/../lib/functions.php';
 
 // main loop
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,7 +58,8 @@ include __DIR__ . '/../lib/functions.php';
 // continously check camera updates
 while (TRUE) {
 	// check if stream is running
-	$pid = trim(`/usr/bin/pgrep -f "[l]ibcamera-vid"`);
+	//$pid = trim(`/usr/bin/pgrep -f "[l]ibcamera-vid"`); // OLD
+	$pid = trim(`/usr/bin/pgrep -f "[g]st-launch-1.0"`);
 
 	if ($pid) {
 		// send ping to server
@@ -65,14 +67,26 @@ while (TRUE) {
 
 		// stream is good, move on
 		echo date('r') . "> Running - $pid\n";
+
+		// check for receiver IP
+		if (time() % 2 == 0) {
+			$rip = get_receiver_ip();
+
+			// IP changed, update
+			if (($rip != NULL) && ($rip != $options['r'])) {
+				$options['r'] = $rip;
+				`/usr/bin/pkill -f "[g]st-launch-1.0"`;
+			}//if
+		}//if
 	} else {
 		// make sure nothing video related is running
-		`/usr/bin/pkill -f "[l]ibcamera-vid"`;
+		//`/usr/bin/pkill -f "[l]ibcamera-vid"`; // OLD
 		`/usr/bin/pkill -f "[g]st-launch-1.0"`;
 
 		// launch
 		//`libcamera-vid -t 0 --framerate 20 --width 640 --height 360 --inline -o udp://0.0.0.0:12345 > /dev/null 2>&1 &`;
-		`/usr/bin/libcamera-vid -t 0 -n --inline --framerate {$options['f']} --width {$options['w']} --height {$options['h']} -o - | /usr/bin/gst-launch-1.0 fdsrc fd=0 ! tcpserversink host=0.0.0.0 port={$options['p']} > /dev/null 2>&1 &`;
+		//`/usr/bin/libcamera-vid -t 0 -n --inline --framerate {$options['f']} --width {$options['w']} --height {$options['h']} -o - | /usr/bin/gst-launch-1.0 fdsrc fd=0 ! tcpserversink host=0.0.0.0 port={$options['p']} > /dev/null 2>&1 &`; // OLD
+		`/usr/bin/gst-launch-1.0 libcamerasrc auto-focus-mode=AfModeAuto ! video/x-raw,colorimetry=bt709,format=NV12,width={$options['w']},height={$options['h']},framerate={$options['f']}/1 ! videoconvert ! x264enc tune=zerolatency bitrate=300 byte-stream=true ! rtph264pay ! queue ! udpsink host={$options['r']} port={$options['p']} ttl=64 > /dev/null 2>&1 &`;
 
 		// send ping to server
 		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f']]);
