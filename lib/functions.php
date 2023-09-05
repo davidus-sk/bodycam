@@ -30,6 +30,27 @@ function post($destination, $type, $data = null) {
 }//function
 
 /**
+ * Get receiver IP address
+ *
+ * @return string
+ */
+function get_receiver_ip($destination) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "http://" . $destination . "/api/get_receiver_ip.php");
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 7);
+	$data = trim(curl_exec($ch));
+	curl_close($ch);
+
+	if (empty($data)) {
+		return NULL;
+	}//if
+
+	return $data;
+}//function
+
+/**
  * Get info from the cellular modem
  *
  * @return bool|array
