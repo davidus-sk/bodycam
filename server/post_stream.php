@@ -7,14 +7,15 @@ $response = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		// get request body
-		$streamId = !empty($_POST['id']) ? trim($_POST['id']) : null;
-		$vpnIp = !empty($_POST['vpn_ip']) ? trim($_POST['vpn_ip']) : null;
-		$fps = !empty($_POST['fps']) ? trim($_POST['fps']) : null;
-		$resolution = !empty($_POST['resolution']) ? trim($_POST['resolution']) : null;
-		$lastPing = !empty($_POST['last_ping']) ? trim($_POST['last_ping']) : null;
-		$modem = !empty($_POST['modem']) ? trim($_POST['modem']) : null;
-		$uptime = !empty($_POST['uptime']) ? trim($_POST['uptime']) : null;
+	// get request body
+	$streamId = !empty($_POST['id']) ? trim($_POST['id']) : null;
+	$vpnIp = !empty($_POST['vpn_ip']) ? trim($_POST['vpn_ip']) : null;
+	$fps = !empty($_POST['fps']) ? trim($_POST['fps']) : null;
+	$resolution = !empty($_POST['resolution']) ? trim($_POST['resolution']) : null;
+	$lastPing = !empty($_POST['last_ping']) ? trim($_POST['last_ping']) : null;
+	$modem = !empty($_POST['modem']) ? trim($_POST['modem']) : null;
+	$uptime = !empty($_POST['uptime']) ? trim($_POST['uptime']) : null;
+	$port = !empty($_POST['port']) ? trim($_POST['port']) : null;
 
         $errors = [];
         if (empty($streamId)) {
@@ -29,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($resolution)) {
             $errors[] = sprintf('"%s": must not be null or empty.', 'resolution');
         }
+	if (empty($port)) {
+		$errors[] = sprintf('"%s": must not be null or empty.', 'port');
+	}//if
         if (empty($lastPing)) {
             $lastPing = time();
         }
@@ -56,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'lastPing_d' => $lastPing,
                         'modem_c' => $modem,
                         'uptime_n' => $uptime,
+			'port_n' => $port,
                     ], ['id_c' => $streamId]);
 
                     http_response_code(200);
@@ -70,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'lastPing_d' => $lastPing,
                         'modem_c' => $modem,
                         'uptime_n' => $uptime,
+			'port_n' => $port,
                         'date_d' => time(),
                     ]);
 
@@ -80,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'id' => $streamId,
                     'vpn_ip' => $vpnIp,
                     'fps' => $fps,
+		'port' => $port,
                     'resolution' => $resolution,
                     'last_ping' => (int)$lastPing,
                 ];
