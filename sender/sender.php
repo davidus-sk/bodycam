@@ -93,6 +93,9 @@ while (TRUE) {
 			post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
 
 			echo date('r') . "> Starting\n";
+		} else {
+			// keep looking for a receiver
+			$options['r'] = get_receiver_ip($options['s']);
 		}//if
 	}//if
 
