@@ -74,7 +74,11 @@ while (TRUE) {
 					`/usr/bin/pkill -9 -f "[S]tream: $id"`;
 					echo date('r') . "> Killing stale stream - $id\n";
 
-					unset($pids[array_search($pid, $pids)]);
+					// remove from running pool
+					if (($i = array_search($pid, $pids)) !== false) {
+						unset($pids[$i]);
+					}//if
+
 					unset($streams[$id]);
 
 					continue;
@@ -86,7 +90,11 @@ while (TRUE) {
 					`/usr/bin/pkill -9 -f "[S]tream: $id"`;
 					echo date('r') . "> Killing stale port - $id\n";
 
-					unset($pids[array_search($pid, $pids)]);
+					// remove from running pool
+					if (($i = array_search($pid, $pids)) !== false) {
+						unset($pids[$i]);
+					}//if
+
 					unset($streams[$id]);
 
 					continue;
@@ -95,7 +103,10 @@ while (TRUE) {
 				// stream is good, move on
 				echo date('r') . "> Running - $pid\n";
 
-				unset($pids[array_search($pid, $pids)]);
+				// remove good stream as well
+				if (($i = array_search($pid, $pids)) !== false) {
+					unset($pids[$i]);
+				}//if
 			} else {
 				// not running, determine free locations
 				foreach ($quad as $q) {
@@ -112,7 +123,11 @@ while (TRUE) {
 						echo date('r') . "> Launching $id on [{$q[0]},{$q[1]}]\n";
 
 						$pid = trim(`/usr/bin/pgrep -f "[S]tream: $id"`);
-						unset($pids[array_search($pid, $pids)]);
+
+						// remove good stream as well
+						if (($i = array_search($pid, $pids)) !== false) {
+							unset($pids[$i]);
+						}//if
 
 						$streams[$id] = $pid;
 
@@ -123,14 +138,17 @@ while (TRUE) {
 			}//if
 		}//foreach
 
+		// do we have any left?
+		// there should not be any phantom streams running
 		if (!empty($pids)) {
 			foreach ($pids as $p) {
 				`/usr/bin/kill -9 $p`;
 
 				echo date('r') . "> Killing orphaned stream - $p\n";
 
-				unset($pids[array_search($p, $pids)]);
-				unset($streams[$id]);
+				if (($i = array_search($pid, $pids)) !== false) {
+					unset($pids[$i]);
+				}//if
 			}//if
 
 			unset($pids);
