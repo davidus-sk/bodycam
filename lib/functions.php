@@ -1,7 +1,22 @@
 <?php
+// common files
+///////////////////////////////////////////////////////////////////////////////
+$config_file = '/app/bodycam/config/settings.json';
 
 // common functions
 ///////////////////////////////////////////////////////////////////////////////
+
+function get_default_interface() {
+	if (file_exists($config_file)) {
+		if ($data = json_decode(file_get_contents($config_file), TRUE)) {
+			if (!empty($data['interface'])) {
+				return trim($data['interface']);
+			}//if
+		}//if
+	}//if
+
+	return 'tun0';
+}//function
 
 /**
  * Post status packet to central VPN server
@@ -9,9 +24,11 @@
  * @return void
  */
 function post($destination, $type, $data = null) {
+	$interface = get_default_interface();
+
 	$post = [
 		'id' => trim(`/usr/bin/cat /proc/cpuinfo | /usr/bin/grep Serial | /usr/bin/cut -d ' ' -f 2`),
-		'vpn_ip' => trim(`/usr/sbin/ip a show dev tun0 | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`),
+		'vpn_ip' => trim(`/usr/sbin/ip a show dev $interface | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`),
 		'uptime' => trim(`/usr/bin/cat /proc/uptime | /usr/bin/cut -d ' ' -f 1`),
 		'modem' => json_encode(get_cellular_data()),
 	];
@@ -35,12 +52,14 @@ function post($destination, $type, $data = null) {
  * @return void
  */
 function create_sdp_file($id, $port) {
-	$receiver_ip = trim(`/usr/sbin/ip a show dev tun0 | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`);
-	
+	$interface = get_default_interface();
+
+	$receiver_ip = trim(`/usr/sbin/ip a show dev $interface | /usr/bin/grep -oP "inet\s([0-9\.]+)" | /usr/bin/grep -oP "([0-9\.]+)"`);
+
 	$contents = "v=0\no=- {$id} 0 IN IP4 {$receiver_ip}\ns=Stream: {$id}\nc=IN IP4 {$receiver_ip}\nt=0 0\nm=video {$port} RTP/AVP 96\na=rtpmap:96 H264/90000\n";
 
 	file_put_contents("/tmp/{$id}.sdp", $contents);
-}//func
+}//function
 
 /**
  * Get receiver IP address
