@@ -7,6 +7,8 @@ $config_file = '/app/bodycam/config/settings.json';
 ///////////////////////////////////////////////////////////////////////////////
 
 function get_default_interface() {
+	global $config_file;
+
 	if (file_exists($config_file)) {
 		if ($data = json_decode(file_get_contents($config_file), TRUE)) {
 			if (!empty($data['interface'])) {
