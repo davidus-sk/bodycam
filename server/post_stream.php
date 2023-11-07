@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$modem = !empty($_POST['modem']) ? trim($_POST['modem']) : null;
 	$uptime = !empty($_POST['uptime']) ? trim($_POST['uptime']) : null;
 	$port = !empty($_POST['port']) ? trim($_POST['port']) : null;
+	$latency = !empty($_POST['latency']) ? trim($_POST['latency']) : null;
 
         $errors = [];
         if (empty($streamId)) {
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'modem_c' => $modem,
                         'uptime_n' => $uptime,
 			'port_n' => $port,
+			'latency_n' => $latency,
                     ], ['id_c' => $streamId]);
 
                     http_response_code(200);
@@ -77,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'uptime_n' => $uptime,
 			'port_n' => $port,
                         'date_d' => time(),
+			'latency_n' => $latency,
                     ]);
 
                     http_response_code(201);
