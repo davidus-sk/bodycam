@@ -90,7 +90,7 @@ while (TRUE) {
 			`/usr/bin/gst-launch-1.0 libcamerasrc auto-focus-mode=AfModeContinuous ! video/x-raw,colorimetry=bt709,format=NV12,width={$options['w']},height={$options['h']},framerate={$options['f']}/1 ! videoconvert ! queue ! x264enc speed-preset=ultrafast tune=zerolatency bitrate=3000 byte-stream=true key-int-max=15 intra-refresh=true ! rtph264pay ! queue ! udpsink host={$options['r']} port={$options['p']} ttl=128 > /dev/null 2>&1 &`;
 
 			// send ping to server
-			post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
+			post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p'], 'latency' => file_exists('/tmp/latency.dat') ? file_get_contents('/tmp/latency.dat') : NULL]);
 
 			echo date('r') . "> Starting\n";
 		} else {
