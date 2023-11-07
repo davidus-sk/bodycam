@@ -1,2 +1,3 @@
 @reboot		root	/app/bodycam/common/at_boot.sh
 * * * * *	root	/app/bodycam/sender/sender.php
+* * * * * root  /app/bodycam/sender/latency.php
