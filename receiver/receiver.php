@@ -119,7 +119,7 @@ while (TRUE) {
 						create_sdp_file($id, $port);
 
 						//`DISPLAY=:0 /usr/bin/ffplay tcp://{$ip}:12345 -vf "setpts=N/{$fps}" -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -left {$q[0]} -top {$q[1]} -window_title "Stream: $id" -x {$bw} -y {$bh} -noborder > /dev/null 2>&1 &`; //old
-						`DISPLAY=:0 /usr/bin/ffplay -protocol_whitelist file,udp,rtp -i /tmp/{$id}.sdp -probesize 32 -sync ext -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -reorder_queue_size 0 -left {$q[0]} -top {$q[1]} -window_title "Stream: {$id}" -x {$bw} -y {$bh} -noborder > /dev/null 2>&1 &`;
+						`DISPLAY=:0 /usr/bin/ffplay -protocol_whitelist file,udp,rtp -i /tmp/{$id}.sdp -probesize 2048 -sync ext -loglevel quiet -stats -hide_banner -fflags nobuffer -flags low_delay -framedrop -reorder_queue_size 0 -left {$q[0]} -top {$q[1]} -window_title "Stream: {$id}" -x {$bw} -y {$bh} -noborder > /dev/null 2>&1 &`;
 						echo date('r') . "> Launching $id on [{$q[0]},{$q[1]}]\n";
 
 						$pid = trim(`/usr/bin/pgrep -f "[S]tream: $id"`);
