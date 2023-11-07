@@ -63,7 +63,7 @@ while (TRUE) {
 
 	if ($pid) {
 		// send ping to server
-		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p']]);
+		post($options['s'], 'stream', ["resolution" => $options['w'] . 'x' . $options['h'], "fps" => $options['f'], 'port' => $options['p'], 'latency' => file_exists('/tmp/latency.dat') ? file_get_contents('/tmp/latency.dat') : NULL]);
 
 		// stream is good, move on
 		echo date('r') . "> Running - $pid\n";
