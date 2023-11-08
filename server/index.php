@@ -92,7 +92,7 @@ $thumbs = $db->asArray();
 		</div>
 
 		<div class="card mb-4">
-			<h5 class="card-header">Current Live Streams</h5>
+			<h5 class="card-header">Current Live Senders</h5>
 
 			<table class="table card-table">
 				<thead>
@@ -103,6 +103,7 @@ $thumbs = $db->asArray();
 						<th style="width: 100px;">Last Ping</th>
 						<th style="width: 150px;">Uptime</th>
 						<th style="width: 160px;">Modem</th>
+						<th style="width: 100px;">Elapsed</th>
 						<th style="width: auto;">Elapsed</th>
 					</tr>
 				</thead>
@@ -129,6 +130,7 @@ $thumbs = $db->asArray();
 						?>
 						</td>
 						<td><?=relativeTime($row['date_d']);?></td>
+						<td><?=$row['latency_n'];?> ms</td>
 					</tr>
 
 				<?php
@@ -137,7 +139,7 @@ $thumbs = $db->asArray();
 				?>
 
 				<tr>
-					<td colspan="7">No streams found.</td>
+					<td colspan="8">No streams found.</td>
 				</tr>
 
 				<?php
@@ -147,6 +149,8 @@ $thumbs = $db->asArray();
 				</tbody>
 			</table>
 		</div>
+
+		<?php /* ?>
 
 		<div class="card mb-4">
 			<h5 class="card-header">Last Images</h5>
@@ -177,6 +181,8 @@ $thumbs = $db->asArray();
 				</div>
 			</div>
 		</div>
+
+		<?php */ ?>
 
 	</div>
 
