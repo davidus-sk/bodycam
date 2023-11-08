@@ -16,7 +16,7 @@ function relativeTime($timestamp, $sufix = true) {
 		$ending = 'ago';
 	} else { // this was in the future
 		$difference = -$difference;
-		$ending = 'to go';
+		$ending = '';
 	}
 
 	for ($j = 0; $difference >= $lengths[$j]; $j++) {
