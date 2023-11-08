@@ -34,7 +34,7 @@ $thumbs = $db->asArray();
 					<th style="width: 80px;">ID</th>
 					<th style="width: 80px;">VPN IP</th>
 					<th style="width: 160px;">Resolution</th>
-					<th style="width: 100px;">Last Ping</th>
+					<th style="width: 120px;">Last Ping</th>
 					<th style="width: 150px;">Uptime</th>
 					<th style="width: 160px;">Modem</th>
 					<th style="width: auto;">Streams</th>
@@ -100,11 +100,11 @@ $thumbs = $db->asArray();
 						<th style="width: 80px;">ID</th>
 						<th style="width: 80px;">VPN IP</th>
 						<th style="width: 160px;">Format</th>
-						<th style="width: 100px;">Last Ping</th>
+						<th style="width: 120px;">Last Ping</th>
 						<th style="width: 150px;">Uptime</th>
 						<th style="width: 160px;">Modem</th>
-						<th style="width: 100px;">Elapsed</th>
-						<th style="width: auto;">Elapsed</th>
+						<th style="width: 120px;">Elapsed</th>
+						<th style="width: auto;">Latency</th>
 					</tr>
 				</thead>
 				<tbody>
